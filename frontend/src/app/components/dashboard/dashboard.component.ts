@@ -280,7 +280,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       client_coordinate_x: this.map.getCenter().lat(),
       client_coordinate_y: this.map.getCenter().lng(),
       radius: 5,
-      activities: [this.searchText],
+      activities: this.searchText,
     }).subscribe(
       (data: any[]) => {
         console.log(data);

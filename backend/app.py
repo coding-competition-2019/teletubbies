@@ -2,6 +2,8 @@ import json
 
 from flask import Flask, request, session
 from datetime import timedelta
+
+from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 import os
@@ -14,7 +16,7 @@ app.permanent_session_lifetime = timedelta(minutes=10)
 app.secret_key = os.urandom(24)
 
 db = SQLAlchemy(app)
-
+cors = CORS(app, resources={r"/foo": {"origins": "http://localhost:port"}})
 def square_root(x):
     return math.sqrt(x)
 
@@ -129,7 +131,7 @@ def signup():
 
 
         if len(exists)>0:
-            response["message"] = session["name"] + " already in database"
+            response["message"] = name + " already in database"
             response["success"] = 0
             return json.dumps(response)
         else:
@@ -139,25 +141,22 @@ def signup():
             c.execute(query, column)
             db.commit()
             c.close()
-            response["message"] = session["name"] + " added"
+            response["message"] = name + " added"
             response["success"] = 1
             return json.dumps(response)
 
 #
 @app.route("/search", methods=["POST"])
+@cross_origin(origin='localhost',headers=['Content- Type'])
 def search():
-    if is_someone_logged_in():
-        client_coordinate_x = float(request.form["client_coordinate_x"])
-        client_coordinate_y = float(request.form["client_coordinate_y"])
-        radius = float(request.form["radius"])
-        activities = json.loads(
-            request.form["activities"])  # returns some kind of json list, has to be converted into python list
+    if is_someone_logged_in(session) or True:
+        json_data = json.loads(request.data)
+        client_coordinate_x = float(json_data["client_coordinate_x"])
+        client_coordinate_y = float(json_data["client_coordinate_y"])
+        radius = float(json_data["radius"])
+        activities = json_data["activities"]  # returns some kind of json list, has to be converted into python list
 
-        print("")
-        print(client_coordinate_x)
-        print(client_coordinate_y)
-        print(radius)
-        print(activities)
+        activities = activities.split()
 
         places = []
 
@@ -198,4 +197,4 @@ def search():
 
 
 if __name__ == '__main__':
-    app.run(debug=True);
+    app.run(debug=True, port=4200);
