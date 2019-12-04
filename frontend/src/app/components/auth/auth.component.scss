@@ -1,0 +1,26 @@
+@import '../../../scss/index';
+.container {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.login-card {
+  width: auto;
+  min-width: 300px;
+  ::ng-deep.mat-card-header-text {
+    width: 100%;
+    text-align: center;
+  }
+  .mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    .spacer {
+      flex-grow: 1;
+    }
+  }
+  .content {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+}

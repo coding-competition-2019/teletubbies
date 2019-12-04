@@ -1,0 +1,23 @@
+@import '../../../scss/index';
+
+.footer-content {
+  z-index: 10;
+  display: flex;
+  position: relative;
+  height: 60px;
+  justify-content: center;
+  align-content: center;
+  color: white;
+  .copyright {
+    position: relative;
+    line-height: 60px;
+    vertical-align: middle;
+    font-size: .9em;
+    img {
+      width: 18px;
+      margin-bottom: -3px;
+      margin-right: 7px;
+      height: auto;
+    }
+  }
+}

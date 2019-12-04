@@ -1,18 +1,38 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+// MODELS
+import { RoutingModule, RoutingComponents } from './modules/routing.module';
+import { MaterialModule } from './modules/material.module';
+
+// COMPONENTS
+import { AuthComponent } from './components/auth/auth.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { FooterComponent } from './components/footer/footer.component';
+
+// SERVICES
+import {AuthService} from './services/auth.service';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RoutingComponents,
+    AuthComponent,
+    NavbarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    RoutingModule,
+    MaterialModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

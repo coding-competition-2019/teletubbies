@@ -1,0 +1,125 @@
+@import '../../../scss/index.scss';
+
+.navbar-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 100vw;
+  color: white;
+//box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+  z-index: 15;
+@include mq('tablet', 'max') {
+  height: auto;
+  min-height: initial;
+  height: auto;
+}
+}
+nav {
+  padding: 8px 16px;
+  padding-right: 28px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  z-index: 10;
+@include mq('tablet', 'max') {
+  align-items: flex-start;
+  font-size: .9em;
+  height: 60px;
+  padding-top: 12px;
+}
+position: relative;
+flex-wrap: wrap;
+max-height: 100vh;
+.logo {
+  font-weight: bold;
+img {
+  margin-right: 10px;
+  margin-bottom: 5px;
+  width: 25px;
+  height: 25px;
+}
+@include mq('tablet', 'max') {
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+}
+.spacer {
+  flex-grow: 1;
+}
+.mat-button {
+  font-size: 1.05em;
+}
+.divider {
+  width: calc(100vw + 32px);
+
+  height:1px;
+  background: rgba(black, .1);
+
+@include mq('tablet', 'max') {
+  display: none;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+}
+.menu-toggle, .login {
+  min-width: 36px;
+  margin-left: 8px;
+  padding: 0 4px;
+.mat-icon {
+@include mq('tablet', 'max') {
+  font-size: 1.5em;
+  margin-bottom: -2px;
+}
+}
+}
+.buttons{
+  display: flex;
+  flex-wrap: wrap;
+  transition: .2s;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+.mat-icon {
+  font-size: 1.2em;
+  margin-bottom: -1px;
+}
+@include mq('tablet', 'max') {
+  width: 100%;
+  justify-content: flex-start;
+  order: 5;
+//display: None;
+  display: none;
+  button {
+    width: 100%;
+    text-align: left;
+  @include mq('tablet', 'max') {
+    margin-bottom: 8px;
+  }
+}
+}
+
+}
+&.opened {
+@include mq('tablet', 'max') {
+  align-items: flex-start;
+  font-size: .9em;
+  height: auto;
+  min-height: 120px;
+}
+.buttons {
+@include mq('tablet', 'max') {
+  display: flex;
+}
+}
+.divider {
+@include mq('tablet', 'max') {
+  display: block;
+}
+}
+}
+}
+.loggedInButton {
+::ng-deep .mat-icon {
+  font-size: 20px;
+}
+}

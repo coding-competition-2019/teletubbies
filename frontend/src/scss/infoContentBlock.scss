@@ -1,0 +1,127 @@
+.info-block {
+  position: relative;
+  .info-block-header {
+    display: flex;
+    align-items: center;
+    .buffer {
+      flex-grow: 1;
+    }
+    .add-button {
+      color: white;
+    }
+
+  }
+  .info-block-sub-header {
+    margin-top: 16px;
+    margin-bottom: 16px !important;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    .buffer {
+      flex-grow: 1;
+    }
+    .add-button {
+      color: white;
+    }
+  }
+  .info-block-content {
+    padding-top: 16px;
+  }
+  .info-content-block {
+    position: relative;
+    width: calc(280px);
+    height: 150px;
+    margin: 0 9px;
+    margin-bottom: 16px;
+    padding: 0;
+    background: rgba(black, .05);
+
+    .content {
+      width: 100%;
+      height: 150px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 12px 16px;
+      text-align: left;
+      line-height: 1.4em;
+      .edit {
+        bottom: 12px;
+        right: 16px;
+        position: absolute;
+        button {
+          color: rgba(white, .7);
+          border-color: rgba(white, .3);
+          transition: .2s;
+          &:hover {
+            color: white;
+            border-color: rgba(white, .6);
+          }
+        }
+      }
+    }
+    &.building-info-content-block, &.short-info-content-block {
+      width: 240px;
+      .content {
+        width: 240px;
+      }
+      &:nth-child(7n) {
+        //margin-right: 0;
+      }
+
+      &:nth-child(8n), &:first-child {
+        //margin-left: 0;
+      }
+    }
+
+  }
+}
+.airport-queue-content {
+  min-height: 156px !important;
+  overflow-x: auto;
+  flex-wrap: initial !important;
+}
+.info-content-block.airport-queue-block {
+  position: relative;
+  width: 230px;
+  min-width: 230px;
+  height: 156px;
+  margin: 0 9px;
+  margin-bottom: 16px;
+  background: #4B0082;
+  padding: 0;
+  color: rgba(white, .9);
+  font-size: .8rem;
+  &.disabled {
+    background: rgba(144, 144, 144, 0.89);
+  }
+  .content {
+    padding: 12px 16px;
+    position: relative;
+    display: block;
+    height: 100%;
+    .index {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      text-align: right;
+      font-size: 1.2rem;
+    }
+  }
+  .edit {
+    bottom: 12px;
+    right: 16px;
+    position: absolute;
+    button {
+      color: rgba(white, .7);
+      border-color: rgba(white, .3);
+      transition: .2s;
+      &:hover {
+        color: white;
+        border-color: rgba(white, .6);
+      }
+    }
+  }
+}

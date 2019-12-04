@@ -1,0 +1,99 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'scss/index';
+@import url("https://use.typekit.net/fgb5qgf.css");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+html, body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow-x: hidden;
+}
+*:not(.mat-icon) {
+  box-sizing: border-box;
+  font-family: prometo, sans-serif !important;
+}
+
+body {
+  background: #e9e9e9;
+}
+
+.container {
+  padding: 30px;
+  position: relative;
+  flex-grow: 1;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(black, .2);
+  z-index: 5000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+router-outlet + * {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+#site-wrapper{
+  position: relative;
+  padding-top: 60px;
+  min-height: calc(100vh);
+  display: flex;
+  flex-direction: column;
+  @include mq('tablet', 'max') {
+    padding-top: 60px;
+  }
+  &.notAuthenticated {
+    padding-top: 0;
+  }
+}
+app-header {
+  height: auto;
+}
+.site-content-wrapper {
+  flex-grow: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+@import '~@angular/material/theming';
+
+// Include non-theme styles for core.
+@include mat-core();
+
+$woa-app-primary: mat-palette($mat-light-blue, 700, A400, 400);
+$woa-app-accent:  mat-palette($mat-green, 500);
+$woa-app-warn:    mat-palette($mat-red, 600);
+
+$woa-app-theme: mat-light-theme($woa-app-primary, $woa-app-accent, $woa-app-warn);
+
+@include angular-material-theme($woa-app-theme);
+
+@mixin woa-app-theme($woa-app-theme) {
+  $primary: map-get($woa-app-theme, primary);
+  $accent: map-get($woa-app-theme, accent);
+  .header {
+    background:  mat-color($primary, A400);
+  }
+  .navbar-wrapper {
+    background:  mat-color($primary, A400);
+  }
+  .footer-content {
+    background:  mat-color($mat-grey, 900);
+  }
+  .profile-header {
+    background: mat-color($primary, A400);
+  }
+}
+
+@include woa-app-theme($woa-app-theme);
