@@ -72,8 +72,9 @@ def login():
         return json.dumps(response)
 
     if request.method == "POST":
-        name = request.form["name"]
-        password = request.form["password"]
+        request_data = json.dumps(request.data)
+        name = str(request_data["name"])
+        password = str(request_data["password"])
 
         #if(name in database and password verified) then session["name"] = name (indication of logged user)
         get_query = "select password from Users where username = ?"
@@ -88,15 +89,15 @@ def login():
                 session.permanent = True
                 session["name"] = name
                 response["message"] = session["name"] + " logged in"
-                response["success"] = 1
+                response["success"] = 0
                 return json.dumps(response)
             else:
                 response["message"] = "incorrect password for " + session["name"]
-                response["success"] = 0
+                response["success"] = 1
                 return json.dumps(response)
         else:
             response["message"] = session["name"] + " not in database"
-            response["success"] = 0
+            response["success"] = 1
             return json.dumps(response)
 
 @app.route("/logout")
@@ -123,9 +124,10 @@ def signup():
         return json.dumps(response)
 
     if request.method == "POST":
-        name = request.form["name"]
-        email = request.form["email"]
-        password = request.form["password"]
+        request_data = json.dumps(request.data)
+        name = str(request_data["name"])
+        password = str(request_data["password"])
+        email = str(request_data["email"])
         #if name is not in database already, add new record=(name, password.encrypt()) to it
         #if it is, then message:"user already exists", success:"False"
 
@@ -208,4 +210,4 @@ def search():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=4200);
+    app.run(debug=True);
