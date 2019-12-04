@@ -6,12 +6,17 @@
     </div>
     <div class="spacer"></div>
 
-    <button mat-button class="loggedInButton" [matMenuTriggerFor]="appMenu">
-      Nickname&nbsp;&nbsp;<mat-icon>person_outline</mat-icon>
+    <button mat-button class="loggedInButton" *ngIf="isLoggedIn === false">
+      Sign In&nbsp;&nbsp;<mat-icon>person_outline</mat-icon>
     </button>
-    <mat-menu #appMenu="matMenu">
-      <button mat-menu-item>Sign Out</button>
-    </mat-menu>
+    <span *ngIf="isLoggedIn === true">
+      <button mat-button class="loggedInButton" [matMenuTriggerFor]="appMenu">
+        Nickname&nbsp;&nbsp;<mat-icon>person_outline</mat-icon>
+      </button>
+      <mat-menu #appMenu="matMenu">
+        <button mat-menu-item>Sign Out</button>
+      </mat-menu>
+    </span>
 
     <button mat-button class="menu-toggle br-tablet-show br-hide" (click)="opened = !opened" *ngIf="!opened"><mat-icon>menu</mat-icon></button>
     <button mat-button class="menu-toggle br-tablet-show br-hide" (click)="opened = !opened" *ngIf="opened"><mat-icon>close</mat-icon></button>

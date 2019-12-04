@@ -45,7 +45,6 @@ router-outlet + * {
 }
 #site-wrapper{
   position: relative;
-  padding-top: 60px;
   min-height: calc(100vh);
   display: flex;
   flex-direction: column;

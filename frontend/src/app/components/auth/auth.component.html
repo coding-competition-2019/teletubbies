@@ -1,22 +1,33 @@
-<form class="container">
+<form class="container" #form="ngForm" (ngSubmit)="Submit(form)">
   <mat-card class="example-card login-card">
     <mat-card-header>
-      <mat-card-title class="card-header">AUTHENTICATION</mat-card-title>
+      <mat-card-title class="card-header">
+        <span *ngIf="formType == FormType.SignUp">SIGN UP</span>
+        <span *ngIf="formType == FormType.Login">LOGIN</span>
+      </mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content class="content">
-      <mat-form-field>
-        <input matInput placeholder="Username">
+      <mat-form-field class="username-field">
+        <input matInput type="text" name="Username" placeholder="Username" [(ngModel)]="username" #usernameInput="ngModel" required>
+        <mat-error [hidden]="(usernameInput.valid || usernameInput.pristine)">
+          Required
+        </mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <input matInput type="password" placeholder="Password">
+      <mat-form-field class="username-field">
+        <input matInput type="password" name="Password" placeholder="Password" [(ngModel)]="password" #passwordInput="ngModel" required>
+        <mat-error [hidden]="(passwordInput.valid || passwordInput.pristine)">
+          Required
+        </mat-error>
       </mat-form-field>
     </mat-card-content>
     <mat-divider></mat-divider>
     <mat-card-actions>
-      <button mat-button type="button">Sign up</button>
+      <button mat-button type="button" *ngIf="formType == FormType.Login" (click)="formType = FormType.SignUp; form.reset()">Sign up</button>
+      <button mat-button color="primary" mat-stroked-button type="submit" *ngIf="formType == FormType.SignUp">SIGN UP</button>
       <span class="spacer"></span>
-      <button mat-button color="primary" mat-stroked-button type="submit">LOGIN</button>
+      <button mat-button type="button" *ngIf="formType == FormType.SignUp" (click)="formType = FormType.Login; form.reset()">Login</button>
+      <button mat-button color="primary" mat-stroked-button type="submit" *ngIf="formType == FormType.Login">LOGIN</button>
     </mat-card-actions>
   </mat-card>
 </form>
