@@ -99,9 +99,9 @@ def signup():
 #
 @app.route("/search", methods=["POST"])
 def search():
-    coordinate_x = int(request.form["coordinate_x"])
-    coordinate_y = int(request.form["coordinate_y"])
-    radius = int(request.form["radius"])
+    coordinate_x = float(request.form["coordinate_x"])
+    coordinate_y = float(request.form["coordinate_y"])
+    radius = float(request.form["radius"])
     activities = request.form["activities"] #returns some kind of json list, has to be converted into python list
 
     #DATABASE FETCH(SELECT): load into variable places (what data structure is returned from the fetch)

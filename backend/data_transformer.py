@@ -37,5 +37,5 @@ for place in data["places"]:
     place["coordinate_Y"] = coordinate_Y
 
 with open("places_transformed.json", "w", encoding="utf8") as f:
-    json.dump(data, f)
+    json.dump(data, f, indent=2)
 

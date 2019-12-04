@@ -6,5 +6,7 @@ with open("places_transformed.json", "r", encoding="utf8") as f:
 
 
 db = sqlite3.connect("McKinsey.db")
-query = "insert into Places values (?,?,?,?,?,?,?)"
+query = "insert into Places values (?,?,?,?,?,?,?,?)"
 
+for place in data["places"]:
+    column = [place[""]]
