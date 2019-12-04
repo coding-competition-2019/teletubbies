@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, request, session
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
@@ -93,6 +95,28 @@ def signup():
             db.commit()
             #EOK
             return "user added"
+
+#
+@app.route("/search", methods=["POST"])
+def search():
+    coordinate_x = int(request.form["coordinate_x"])
+    coordinate_y = int(request.form["coordinate_y"])
+    radius = int(request.form["radius"])
+    activities = request.form["activities"] #returns some kind of json list, has to be converted into python list
+
+    #DATABASE FETCH(SELECT): load into variable places (what data structure is returned from the fetch)
+
+    places = [] #list of dictionaries, i guess
+
+    json_to_be_returned = json.dump(places, indent=2)
+
+    return json_to_be_returned
+
+
+
+
+
+
 
 
 
