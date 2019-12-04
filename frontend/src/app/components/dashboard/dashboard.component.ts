@@ -273,6 +273,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     })
     marker.setMap(this.map);
     const infoWindow = new google.maps.InfoWindow;
+
     marker.addListener('click', function() {
       infoWindow.open(marker.get('map'), marker);
       infoWindow.setContent(data[1] + '<br>' + data[3] + '<br>' + data[2] + '<br>' + data[9]);
@@ -287,8 +288,13 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       radius: 5,
       activities: this.searchText,
     }).subscribe(
+
       (data: any[]) => {
         console.log(data);
+        for (const i=0; i< this.markers.length; i++) {
+          this.markers[i].setMap(null);
+        }
+        this.markers = [];
         for (let i = 0; i < data.length; i++) {
           this.createMarker(data[i]);
         }
