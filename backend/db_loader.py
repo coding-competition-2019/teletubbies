@@ -13,6 +13,7 @@ for place in data["places"]:
     print(column)
     c = db.cursor()
     c.execute(query, column)
+    db.commit()
     c.close()
 
 
