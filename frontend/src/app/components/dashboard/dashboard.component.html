@@ -1,4 +1,11 @@
 <div #mapContainer id="map"></div>
 <div class="search-wrapper">
-  <div></div>
+  <div class="input-part">
+    <span class="hi">Hi user</span>
+    <span class="text">Feeling bored? We`ve got you.</span>
+    <div class="input-wrapper">
+      <input type="text" placeholder="Search for an activity" [(ngModel)]="searchText">
+      <button (click)="search()"><img src="assets/search_icon.png"></button>
+    </div>
+  </div>
 </div>
