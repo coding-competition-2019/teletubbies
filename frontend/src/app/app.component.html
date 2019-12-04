@@ -1,0 +1,9 @@
+<div id="site-wrapper" [class.notAuthenticated]="!authService.IsLoggedIn">
+  <app-navbar *ngIf="authService.IsLoggedIn">
+  </app-navbar>
+  <div class="site-content-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer *ngIf="authService.IsLoggedIn">
+  </app-footer>
+</div>

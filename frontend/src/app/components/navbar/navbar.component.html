@@ -1,0 +1,20 @@
+<div class="navbar-wrapper mat-elevation-z6">
+  <nav [class.opened]="opened">
+    <button mat-button class="logo" routerLink="/">TELETUBBIES</button>
+    <div class="buttons">
+      <button mat-button routerLink="/">Dashboard</button>
+    </div>
+    <div class="spacer"></div>
+
+    <button mat-button class="loggedInButton" [matMenuTriggerFor]="appMenu">
+      Nickname&nbsp;&nbsp;<mat-icon>person_outline</mat-icon>
+    </button>
+    <mat-menu #appMenu="matMenu">
+      <button mat-menu-item>Sign Out</button>
+    </mat-menu>
+
+    <button mat-button class="menu-toggle br-tablet-show br-hide" (click)="opened = !opened" *ngIf="!opened"><mat-icon>menu</mat-icon></button>
+    <button mat-button class="menu-toggle br-tablet-show br-hide" (click)="opened = !opened" *ngIf="opened"><mat-icon>close</mat-icon></button>
+    <div class="divider br-tablet-show br-hide"></div>
+  </nav>
+</div>
