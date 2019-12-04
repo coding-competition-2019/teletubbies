@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {NgForm} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
+import {map} from 'rxjs/operators';
 
 enum FormType {
   Login = 1,
@@ -20,20 +22,18 @@ export class AuthComponent implements OnInit {
   username = '';
   password = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private http: HttpClient) { }
 
   ngOnInit() {
   }
 
-  Submit(f: NgForm) {
+  async Submit(f: NgForm) {
     if (f.valid) {
       switch (this.formType) {
         case FormType.SignUp:
-          // TODO
-          break;
+          await this.http.post('http://127.0.0.1:5000/login', {msg: 'sdf'}).pipe(map((x: any) => x.success === 0));          break;
         case FormType.Login:
-          // TODO
-          break;
+          await this.http.post('http://127.0.0.1:5000/login', {msg: 'sdf'}).pipe(map((x: any) => x.success === 0));          break;
       }
     }
   }
