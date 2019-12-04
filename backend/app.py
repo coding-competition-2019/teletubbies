@@ -13,36 +13,30 @@ app.secret_key = os.urandom(24)
 
 db = SQLAlchemy(app)
 
-class users(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    password = db.Column(db.String(100))
-
-    def __init__(self, name, password):
-        self.name = name
-        self.password = password
-
-
 def is_someone_logged_in(session):
     if "name" in session:
         return True
     else:
         return False
 
+response = {"message" : "nothing", "success" : 0}
 
 @app.route('/')
 def index():
     if is_someone_logged_in(session):
         #message: someone already logged in
-        return session["name"] + " already logged in"
+        response["message"] = session["name"] + " already logged in"
+        response["success"] = 0
+        return json.dumps(response)
     else:
         return "Hello World!"
 
 @app.route("/login", methods=["POST"])
 def login():
     if is_someone_logged_in(session):
-        #message: someone already logged in
-        return session["name"] + " already logged in"
+        response["message"] = session["name"] + " already logged in"
+        response["success"] = 0
+        return json.dumps(response)
 
     if request.method == "POST":
         name = request.form["name"]
@@ -55,30 +49,38 @@ def login():
             if sha256_crypt.verify(password, found_user.password):
                 session.permanent = True
                 session["name"] = name
-                #EOK
+                response["message"] = session["name"] + " logged in"
+                response["success"] = 1
+                return json.dumps(response)
             else:
-                #Incorrect password
-                return "incorrect password"
+                response["message"] = "incorrect password for " + session["name"]
+                response["success"] = 0
+                return json.dumps(response)
         else:
-            #name not in database
-            return "name not in database"
+            response["message"] = session["name"] + " not in database"
+            response["success"] = 0
+            return json.dumps(response)
 
 @app.route("/logout")
 def logout():
     if is_someone_logged_in(session):
         name = session["name"]
         session.clear()
-        return name + " logged out"
+        response["message"] = session["name"] + " logged out"
+        response["success"] = 1
+        return json.dumps(response)
     else:
-        #message: Nobody's logged in
-        return "nobody's logged in"
+        response["message"] = "nobody's logged in"
+        response["success"] = 0
+        return json.dumps(response)
 
 @app.route("/signup", methods=["POST"])
 def signup():
 
     if is_someone_logged_in(session):
-        #message: someone already logged in
-        return session["name"] + " already logged in"
+        response["message"] = session["name"] + " already logged in"
+        response["success"] = 0
+        return json.dumps(response)
 
     if request.method == "POST":
         name = request.form["name"]
@@ -87,32 +89,40 @@ def signup():
         #if it is, then message:"user already exists", success:"False"
 
         if users.query.filter_by(name=name).first():
-            #already in database
-            return "already in database"
+            response["message"] = session["name"] + " already in database"
+            response["success"] = 0
+            return json.dumps(response)
         else:
             user = users(name, sha256_crypt.encrypt(password))
             db.session.add(user)
             db.commit()
-            #EOK
-            return "user added"
+            response["message"] = session["name"] + " added"
+            response["success"] = 1
+            return json.dumps(response)
 
 #
 @app.route("/search", methods=["POST"])
 def search():
-    coordinate_x = float(request.form["coordinate_x"])
-    coordinate_y = float(request.form["coordinate_y"])
+    client_coordinate_x = float(request.form["client_coordinate_x"])
+    client_coordinate_y = float(request.form["client_coordinate_y"])
     radius = float(request.form["radius"])
-    activities = request.form["activities"] #returns some kind of json list, has to be converted into python list
+    activities = json.loads(request.form["activities"]) #returns some kind of json list, has to be converted into python list
+
+    print(client_coordinate_x)
+    print(client_coordinate_y)
+    print(radius)
+    print(activities)
+
 
     #DATABASE FETCH(SELECT): load into variable places (what data structure is returned from the fetch)
 
+
     places = [] #list of dictionaries, i guess
 
-    json_to_be_returned = json.dump(places, indent=2)
+    json_to_be_returned = json.dumps(places,indent=2)
 
     return json_to_be_returned
 
 
 if __name__ == '__main__':
-    db.create_all()
     app.run(debug=True);
