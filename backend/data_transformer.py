@@ -10,8 +10,8 @@ def get_coordinates(street):
 
 
 
-with open("places.json") as f:
-    data = json.load(f)
+with open("places.json", "r", encoding="utf8") as f:
+    data = json.loads(f.read())
 
 print(type(data))
 print(type(data["places"]))
@@ -19,13 +19,11 @@ print(type(data["places"][0]))
 
 for place in data["places"]:
     address = place["address"]
-    print(type(address))
     street = address["street"]
     coordinate_X, coordinate_Y = get_coordinates(street)
     place["coordinate_X"] = coordinate_X
     place["coordinate_Y"] = coordinate_Y
 
-with open("places_transformed.json", "w") as f:
-    print(json.dump(data, indent=2))
-    json.dump(data, f)
+with open("places_transformed.json", "w", encoding="utf8") as f:
+    json.dump(data, f, indent=2)
 
