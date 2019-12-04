@@ -298,7 +298,6 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
         for (let i = 0; i < data.length; i++) {
           this.createMarker(data[i]);
         }
-        alert('ok');
       },
       error => {
         console.log(JSON.stringify(error.json()));
