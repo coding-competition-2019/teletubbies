@@ -117,6 +117,7 @@ def search():
     radius = float(request.form["radius"])
     activities = json.loads(request.form["activities"]) #returns some kind of json list, has to be converted into python list
 
+    print("")
     print(client_coordinate_x)
     print(client_coordinate_y)
     print(radius)
@@ -134,9 +135,18 @@ def search():
     c = db.cursor()
     c.execute(query, params)
     places = c.fetchall()
+    activities_set = set(activities)
+    return_places = []
+
+    for place in places:
+        ahoj = set(json.loads(place[8]))
+        print(ahoj)
+        if len(activities_set.intersection(ahoj)) > 0:
+            return_places.append(place)
     c.close()
 
-    json_to_be_returned = json.dumps(places,indent=2)
+    print(len(return_places))
+    json_to_be_returned = json.dumps(return_places,indent=2)
 
     return json_to_be_returned
 
