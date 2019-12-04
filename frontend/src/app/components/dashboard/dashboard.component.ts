@@ -225,7 +225,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.map.mapTypes.set('styled_map', styledMapType);
     this.map.setMapTypeId('styled_map');
     const map = this.map;
-
+    const a = this.search;
     const infoWindow = new google.maps.InfoWindow;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -234,7 +234,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
           lng: position.coords.longitude
         };
         map.setCenter(pos);
-        this.search();
+        a();
       }, function() {
         this.handleLocationError(true, infoWindow, this.map.getCenter());
       });
@@ -275,8 +275,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.markers.push(marker);
   }
 
-  async search() {
-    this.http.post('/api', {
+  search() {
+    this.http.post('http://127.0.0.1:5000/search', {
       client_coordinate_x: this.map.getCenter().lat(),
       client_coordinate_y: this.map.getCenter().lng(),
       radius: 5,
