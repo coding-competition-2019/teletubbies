@@ -9,7 +9,7 @@ import {map} from 'rxjs/operators';
 export class AuthService {
 
   public get IsLoggedIn(): Observable<boolean> {
-    return this.http.post('http://127.0.0.1:5000/login', {}).pipe(map((x: any) => x.success === 0));
+    return this.http.get('http://127.0.0.1:5000/').pipe(map((x: any) => x.success === 0));
   }
 
   constructor(private http: HttpClient) { }

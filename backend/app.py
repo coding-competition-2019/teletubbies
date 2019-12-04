@@ -51,6 +51,7 @@ def is_someone_logged_in(session):
 response = {"message" : "nothing", "success" : 0}
 
 @app.route('/')
+@cross_origin(origin='localhost',headers=['Content- Type'])
 def index():
     if is_someone_logged_in(session):
         #message: someone already logged in
@@ -58,9 +59,12 @@ def index():
         response["success"] = 0
         return json.dumps(response)
     else:
-        return "Hello World!"
+        response["message"] = "nobody's logged in"
+        response["success"] = 1
+        return json.dumps(response)
 
 @app.route("/login", methods=["POST"])
+@cross_origin(origin='localhost',headers=['Content- Type'])
 def login():
     if is_someone_logged_in(session):
         response["message"] = session["name"] + " already logged in"
@@ -77,9 +81,10 @@ def login():
         c = db.cursor()
         c.execute(get_query, [name])
         found_pass = c.fetchall()
+        print(found_pass)
         c.close()
         if found_pass:
-            if sha256_crypt.verify(password, found_pass):
+            if sha256_crypt.verify(password, found_pass[0][0]):
                 session.permanent = True
                 session["name"] = name
                 response["message"] = session["name"] + " logged in"
@@ -95,6 +100,7 @@ def login():
             return json.dumps(response)
 
 @app.route("/logout")
+@cross_origin(origin='localhost',headers=['Content- Type'])
 def logout():
     if is_someone_logged_in(session):
         name = session["name"]
@@ -108,6 +114,7 @@ def logout():
         return json.dumps(response)
 
 @app.route("/signup", methods=["POST"])
+@cross_origin(origin='localhost',headers=['Content- Type'])
 def signup():
 
     if is_someone_logged_in(session):
@@ -153,7 +160,7 @@ def signup():
 @app.route("/search", methods=["POST"])
 @cross_origin(origin='localhost',headers=['Content- Type'])
 def search():
-    if is_someone_logged_in(session) or True:
+    if is_someone_logged_in(session):
         json_data = json.loads(request.data)
         client_coordinate_x = float(json_data["client_coordinate_x"])
         client_coordinate_y = float(json_data["client_coordinate_y"])
