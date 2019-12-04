@@ -2,9 +2,9 @@
 <div class="search-wrapper">
   <form class="input-part" #form="ngForm" (ngSubmit)="search(form)">
     <span class="hi">Hi user</span>
-    <span class="text">Feeling bored? We`ve got you.</span>
+    <span class="text">Feeling bored?</span>
     <div class="input-wrapper">
-      <input type="text" placeholder="Search for an activity" name="search" [(ngModel)]="searchText" #input1="ngModel"  required>
+      <input type="text" placeholder="Search for an activity" name="search" [(ngModel)]="searchText" #input1="ngModel"  >
       <button type="submit"><img src="assets/search_icon.png"></button>
     </div>
     <div class="dest-input">

@@ -39,7 +39,8 @@ def distance(lat1, lon1, lat2, lon2):
 
     dist = r * c
 
-    return dist
+
+    return round(dist,2)
 
 
 def is_someone_logged_in(session):
