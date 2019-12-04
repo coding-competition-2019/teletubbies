@@ -187,8 +187,9 @@ def search():
         activities_set = set(activities_data)
         return_places = []
 
-        if(len(activities_set) < 1):
-            return_places = places
+        if(activities_data[0] == ''):
+            for place in places:
+                return_places.append(place)
         else:
             for place in places:
                 place_activities = set(json.loads(place[8]))
