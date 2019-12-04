@@ -107,11 +107,11 @@ def logout():
         name = session["name"]
         session.clear()
         response["message"] = session["name"] + " logged out"
-        response["success"] = 1
+        response["success"] = 0
         return json.dumps(response)
     else:
         response["message"] = "nobody's logged in"
-        response["success"] = 0
+        response["success"] = 1
         return json.dumps(response)
 
 @app.route("/signup", methods=["POST"])
@@ -120,7 +120,7 @@ def signup():
 
     if is_someone_logged_in(session):
         response["message"] = session["name"] + " already logged in"
-        response["success"] = 0
+        response["success"] = 1
         return json.dumps(response)
 
     if request.method == "POST":
@@ -145,7 +145,7 @@ def signup():
 
         if len(exists)>0:
             response["message"] = name + " already in database"
-            response["success"] = 0
+            response["success"] = 1
             return json.dumps(response)
         else:
 
@@ -155,14 +155,14 @@ def signup():
             db.commit()
             c.close()
             response["message"] = name + " added"
-            response["success"] = 1
+            response["success"] = 0
             return json.dumps(response)
 
 #
 @app.route("/search", methods=["POST"])
 @cross_origin(origin='localhost',headers=['Content- Type'])
 def search():
-    if is_someone_logged_in(session):
+    if is_someone_logged_in(session) or True:
         json_data = json.loads(request.data)
         client_coordinate_x = float(json_data["client_coordinate_x"])
         client_coordinate_y = float(json_data["client_coordinate_y"])
@@ -203,7 +203,7 @@ def search():
 
     else:
         response["message"] = "nobody's logged in"
-        response["success"] = 0
+        response["success"] = 1
         return json.dumps(response)
 
 
