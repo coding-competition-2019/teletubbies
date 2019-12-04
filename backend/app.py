@@ -70,10 +70,14 @@ def login():
         password = request.form["password"]
 
         #if(name in database and password verified) then session["name"] = name (indication of logged user)
-
-        found_user = users.query.filter_by(name=name).first()
-        if found_user:
-            if sha256_crypt.verify(password, found_user.password):
+        get_query = "select password from Users where username = ?"
+        db = sqlite3.connect("McKinsey.db")
+        c = db.cursor()
+        c.execute(get_query, [name])
+        found_pass = c.fetchall()
+        c.close()
+        if found_pass:
+            if sha256_crypt.verify(password, found_pass):
                 session.permanent = True
                 session["name"] = name
                 response["message"] = session["name"] + " logged in"
