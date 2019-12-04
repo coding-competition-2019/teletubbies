@@ -21,6 +21,24 @@ def square_root(x):
 def square(x):
     return x*x
 
+def distance(lat1, lon1, lat2, lon2):
+    r = 6378.0
+
+    lat1 = math.radians(lat1)
+    lon1 = math.radians(lon1)
+    lat2 = math.radians(lat2)
+    lon2 = math.radians(lon2)
+
+    delta_lon = lon2 - lon1
+    delta_lat = lat2 - lat1
+
+    a = math.sin(delta_lat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(delta_lon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+    dist = r * c
+
+    return dist
+
 
 def is_someone_logged_in(session):
     if "name" in session:
@@ -131,7 +149,8 @@ def search():
     db = sqlite3.connect("McKinsey.db")
     db.create_function("square_root",1,square_root)
     db.create_function("square",1,square)
-    query = "select p.*, 111*(square_root(square(p.coordinate_x - ?)+ square(p.coordinate_y - ?))) distance  from Places p where distance < ? order by distance"
+    db.create_function("get_distance",4,distance)
+    query = "select p.*, get_distance(p.coordinate_x, p.coordinate_y, ?, ?) distance  from Places p where distance < ? order by distance"
     c = db.cursor()
     c.execute(query, params)
     places = c.fetchall()
@@ -139,9 +158,8 @@ def search():
     return_places = []
 
     for place in places:
-        ahoj = set(json.loads(place[8]))
-        print(ahoj)
-        if len(activities_set.intersection(ahoj)) > 0:
+        place_activities = set(json.loads(place[8]))
+        if len(activities_set.intersection(place_activities)) > 0:
             return_places.append(place)
     c.close()
 
