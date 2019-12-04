@@ -5,6 +5,8 @@ from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 import os
+import sqlite3
+import math
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
@@ -12,6 +14,13 @@ app.permanent_session_lifetime = timedelta(minutes=10)
 app.secret_key = os.urandom(24)
 
 db = SQLAlchemy(app)
+
+def square_root(x):
+    return math.sqrt(x)
+
+def square(x):
+    return x*x
+
 
 def is_someone_logged_in(session):
     if "name" in session:
@@ -113,11 +122,19 @@ def search():
     print(radius)
     print(activities)
 
+    places = []
 
     #DATABASE FETCH(SELECT): load into variable places (what data structure is returned from the fetch)
 
-
-    places = [] #list of dictionaries, i guess
+    params = [client_coordinate_x, client_coordinate_y, radius]
+    db = sqlite3.connect("McKinsey.db")
+    db.create_function("square_root",1,square_root)
+    db.create_function("square",1,square)
+    query = "select p.*, 111*(square_root(square(p.coordinate_x - ?)+ square(p.coordinate_y - ?))) distance  from Places p where distance < ? order by distance"
+    c = db.cursor()
+    c.execute(query, params)
+    places = c.fetchall()
+    c.close()
 
     json_to_be_returned = json.dumps(places,indent=2)
 
