@@ -233,9 +233,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        this.createMarker({});
-
         map.setCenter(pos);
+        this.search();
       }, function() {
         this.handleLocationError(true, infoWindow, this.map.getCenter());
       });
@@ -265,24 +264,29 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       'Error: Your browser doesn\'t support geolocation.');
   }
 
-  createMarker(data: {}) {
+  createMarker(data) {
+    console.log(data);
+    const coordinates = new google.maps.LatLng(data[6], data[7]);
     const marker = new google.maps.Marker({
-      position: this.coordinates,
+      position: coordinates,
       map: this.map,
     })
     marker.setMap(this.map);
     this.markers.push(marker);
   }
 
-  search() {
+  async search() {
     this.http.post('/api', {
       client_coordinate_x: this.map.getCenter().lat(),
       client_coordinate_y: this.map.getCenter().lng(),
       radius: 5,
       activities: [this.searchText],
     }).subscribe(
-      data => {
+      (data: any[]) => {
         console.log(data);
+        for (let i = 0; i < data.length; i++) {
+          this.createMarker(data[i]);
+        }
         alert('ok');
       },
       error => {
