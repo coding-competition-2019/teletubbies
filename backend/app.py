@@ -162,7 +162,7 @@ def signup():
 @app.route("/search", methods=["POST"])
 @cross_origin(origin='localhost',headers=['Content- Type'])
 def search():
-    if is_someone_logged_in(session) or True:
+    if True:
         json_data = json.loads(request.data)
         client_coordinate_x = float(json_data["client_coordinate_x"])
         client_coordinate_y = float(json_data["client_coordinate_y"])

@@ -12,6 +12,7 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> {
-    return this.authService.IsLoggedIn.pipe(tap(x => { if (!x) { this.router.navigate(['/auth']); }}));
+    return of(true);
+    //return this.authService.IsLoggedIn.pipe(tap(x => { if (!x) { this.router.navigate(['/auth']); }}));
   }
 }
