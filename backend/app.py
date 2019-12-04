@@ -160,8 +160,8 @@ def search():
         radius = float(json_data["radius"])
         activities = json_data["activities"]  # returns some kind of json list, has to be converted into python list
 
-        activities = activities.split()
-
+        activities_data = activities.split(",")
+        print(activities_data)
         places = []
 
         # DATABASE FETCH(SELECT): load into variable places (what data structure is returned from the fetch)
@@ -175,7 +175,7 @@ def search():
         c = db.cursor()
         c.execute(query, params)
         places = c.fetchall()
-        activities_set = set(activities)
+        activities_set = set(activities_data)
         return_places = []
 
         if(len(activities_set) < 1):
