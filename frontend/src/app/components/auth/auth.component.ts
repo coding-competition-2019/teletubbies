@@ -31,9 +31,9 @@ export class AuthComponent implements OnInit {
     if (f.valid) {
       switch (this.formType) {
         case FormType.SignUp:
-          await this.http.post('http://127.0.0.1:5000/login', {msg: 'sdf'}).pipe(map((x: any) => x.success === 0));          break;
+          // this.http.post('http://127.0.0.1:5000/login', {msg: 'sdf'}).pipe(map((x: any) => x.success === 0));          break;
         case FormType.Login:
-          await this.http.post('http://127.0.0.1:5000/login', {msg: 'sdf'}).pipe(map((x: any) => x.success === 0));          break;
+          // this.http.post('http://127.0.0.1:5000/login', {msg: 'sdf'}).pipe(map((x: any) => x.success === 0));          break;
       }
     }
   }

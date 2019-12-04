@@ -272,6 +272,10 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       map: this.map,
     })
     marker.setMap(this.map);
+    const infoWindow = new google.maps.InfoWindow;
+    marker.addListener('click', function() {
+      infowindow.open(marker.get('map'), marker);
+    });
     this.markers.push(marker);
   }
 
