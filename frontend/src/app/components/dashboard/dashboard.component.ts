@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {tap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +13,7 @@ import {HttpClient} from '@angular/common/http';
 export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   searchText = '';
+  destinationText = '';
 
   paramsSub: Subscription;
   @ViewChild('mapContainer') gmap: ElementRef;
@@ -276,33 +278,34 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
     marker.addListener('click', function() {
       infoWindow.open(marker.get('map'), marker);
-      infoWindow.setContent('<a href="' + data[9] + '">' + data[1] + ' + </a><br>' + data[3] + '<br>' + data[2]);
+      infoWindow.setContent('<a href="' + data[2] + '">' + data[1] + '</a><br>' + data[3] + '<br>' + data[9]);
     });
     this.markers.push(marker);
   }
 
-  search() {
-    this.http.post('http://127.0.0.1:5000/search', {
-      client_coordinate_x: this.map.getCenter().lat(),
-      client_coordinate_y: this.map.getCenter().lng(),
-      radius: 5,
-      activities: this.searchText,
-    }).subscribe(
-
-      (data: any[]) => {
-        console.log(data);
-        for (const i=0; i< this.markers.length; i++) {
-          this.markers[i].setMap(null);
+  search(f: NgForm) {
+    if (f.valid) {
+      this.http.post('http://127.0.0.1:5000/search', {
+        client_coordinate_x: this.map.getCenter().lat(),
+        client_coordinate_y: this.map.getCenter().lng(),
+        radius: this.destinationText,
+        activities: this.searchText,
+      }).subscribe(
+        (data: any[]) => {
+          console.log(data);
+          for (const i = 0; i < this.markers.length; i++) {
+            this.markers[i].setMap(null);
+          }
+          this.markers = [];
+          for (let i = 0; i < data.length; i++) {
+            this.createMarker(data[i]);
+          }
+        },
+        error => {
+          console.log(JSON.stringify(error.json()));
         }
-        this.markers = [];
-        for (let i = 0; i < data.length; i++) {
-          this.createMarker(data[i]);
-        }
-      },
-      error => {
-        console.log(JSON.stringify(error.json()));
-      }
-    )
-    console.log(this.searchText);
+      )
+      console.log(this.searchText);
+    }
   }
 }

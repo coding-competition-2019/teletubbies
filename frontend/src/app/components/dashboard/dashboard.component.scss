@@ -71,3 +71,15 @@
     }
   }
 }
+.dest-input {
+  top: 2px;
+  right: 6px;
+  position: absolute;
+  input {
+    padding: 8px 16px;
+    border-radius: 10px;
+    outline: none;
+    box-shadow: 0 3px 19px rgba(92, 92, 92, 0.16);
+    border: none;
+  }
+}
