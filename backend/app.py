@@ -111,18 +111,34 @@ def signup():
 
     if request.method == "POST":
         name = request.form["name"]
+        email = request.form["email"]
         password = request.form["password"]
         #if name is not in database already, add new record=(name, password.encrypt()) to it
         #if it is, then message:"user already exists", success:"False"
 
-        if users.query.filter_by(name=name).first():
+
+        column = [name, email, sha256_crypt.encrypt(password)]
+        db = sqlite3.connect("McKinsey.db")
+        c = db.cursor()
+
+        get_query = "select username from Users u where u.username = ?"
+        c.execute(get_query, [name])
+        exists = c.fetchall()
+        print(exists)
+        c.close()
+
+
+        if len(exists)>0:
             response["message"] = session["name"] + " already in database"
             response["success"] = 0
             return json.dumps(response)
         else:
-            user = users(name, sha256_crypt.encrypt(password))
-            db.session.add(user)
+
+            query = "insert into Users(username, email, password) values (?, ?, ?)"
+            c = db.cursor()
+            c.execute(query, column)
             db.commit()
+            c.close()
             response["message"] = session["name"] + " added"
             response["success"] = 1
             return json.dumps(response)
@@ -130,43 +146,55 @@ def signup():
 #
 @app.route("/search", methods=["POST"])
 def search():
-    client_coordinate_x = float(request.form["client_coordinate_x"])
-    client_coordinate_y = float(request.form["client_coordinate_y"])
-    radius = float(request.form["radius"])
-    activities = json.loads(request.form["activities"]) #returns some kind of json list, has to be converted into python list
+    if is_someone_logged_in():
+        client_coordinate_x = float(request.form["client_coordinate_x"])
+        client_coordinate_y = float(request.form["client_coordinate_y"])
+        radius = float(request.form["radius"])
+        activities = json.loads(
+            request.form["activities"])  # returns some kind of json list, has to be converted into python list
 
-    print("")
-    print(client_coordinate_x)
-    print(client_coordinate_y)
-    print(radius)
-    print(activities)
+        print("")
+        print(client_coordinate_x)
+        print(client_coordinate_y)
+        print(radius)
+        print(activities)
 
-    places = []
+        places = []
 
-    #DATABASE FETCH(SELECT): load into variable places (what data structure is returned from the fetch)
+        # DATABASE FETCH(SELECT): load into variable places (what data structure is returned from the fetch)
 
-    params = [client_coordinate_x, client_coordinate_y, radius]
-    db = sqlite3.connect("McKinsey.db")
-    db.create_function("square_root",1,square_root)
-    db.create_function("square",1,square)
-    db.create_function("get_distance",4,distance)
-    query = "select p.*, get_distance(p.coordinate_x, p.coordinate_y, ?, ?) distance  from Places p where distance < ? order by distance"
-    c = db.cursor()
-    c.execute(query, params)
-    places = c.fetchall()
-    activities_set = set(activities)
-    return_places = []
+        params = [client_coordinate_x, client_coordinate_y, radius]
+        db = sqlite3.connect("McKinsey.db")
+        db.create_function("square_root", 1, square_root)
+        db.create_function("square", 1, square)
+        db.create_function("get_distance", 4, distance)
+        query = "select p.*, get_distance(p.coordinate_x, p.coordinate_y, ?, ?) distance  from Places p where distance < ? order by distance"
+        c = db.cursor()
+        c.execute(query, params)
+        places = c.fetchall()
+        activities_set = set(activities)
+        return_places = []
 
-    for place in places:
-        place_activities = set(json.loads(place[8]))
-        if len(activities_set.intersection(place_activities)) > 0:
-            return_places.append(place)
-    c.close()
+        if(len(activities_set) < 1):
+            return_places = places
+        else:
+            for place in places:
+                place_activities = set(json.loads(place[8]))
+                if len(activities_set.intersection(place_activities)) > 0:
+                    return_places.append(place)
+        c.close()
 
-    print(len(return_places))
-    json_to_be_returned = json.dumps(return_places,indent=2)
+        print(len(return_places))
+        json_to_be_returned = json.dumps(return_places, indent=2)
 
-    return json_to_be_returned
+        return json_to_be_returned
+
+    else:
+        response["message"] = "nobody's logged in"
+        response["success"] = 0
+        return json.dumps(response)
+
+
 
 
 if __name__ == '__main__':
