@@ -1,7 +1,14 @@
-import json
+import json, googlemaps
 
 #street passed as string
 def get_coordinates(street):
+    
+    gmaps_key = googlemaps.Client(key = "AIzaSyAVsQFt2JPrScp3gzgvu4FwnCGxH8mvmpw")
+
+    geocode_res = gmaps_key.geocode(street)
+    coordinate_X = geocode_res[0]["geometry"]["location"]["lat"]
+    coordinate_Y = geocode_res[0]["geometry"]["location"]["lng"]
+    
     coordinate_X = 0
     coordinate_Y = 0
 
