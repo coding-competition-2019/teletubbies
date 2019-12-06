@@ -278,7 +278,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
     marker.addListener('click', function() {
       infoWindow.open(marker.get('map'), marker);
-      infoWindow.setContent('<a href="' + data[2] + '">' + data[1] + '</a><br>' + data[3] + '<br>' + data[9]);
+      infoWindow.setContent('<a href="' + data[2] + '">' + data[1] + '</a><br>' + data[3] + '<br>' + data[9] + ' km');
     });
     this.markers.push(marker);
   }
